@@ -17,7 +17,7 @@
     "url\""
   ],
   "bin": {
-    "separate-ng-inline-templates": "bin/convert.js"
+    "separate-ng-inline-styles": "bin/convert.js"
   },
   "author": "Weeghel",
   "license": "MIT",
