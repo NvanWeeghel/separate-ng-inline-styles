@@ -30,7 +30,7 @@ function removeFile(path, messages) {
 
 function writeTemplateFile(filepath, styleContent) {
     let componentFilePath = filepath.replace(/(\.scss)$/, ".ts"),
-        pat = new RegExp("('|\")?styles('|\")?:[\\s\\n]*`[\\s]*[^`]*`", "g");
+        pat = new RegExp("('|\")?styles('|\")?:\s?[\\s\\n]*`[\\s]*[^`]*`", "g");
     fs.writeFile(filepath, styleContent, function (err) {
         if (err) {
             console.log("Error creating the style file, so reverting back.");
@@ -85,7 +85,7 @@ function createTemplateScssFile(componentFilePath, templateContent) {
         stylePath = filePath + "/" + fileName.replace("component.ts", "component.scss");
         fs.stat(stylePath, function(err, stats) {
             if (!stats || (err && err.Error.match(/(no such file or directory)/gi))) {
-                console.log("Component style file not exists and inline styles found, so its migrating inline styles to style file. Component" + componentFilePath);
+                console.log("Component style file not exists and inline styles found, so its migrating inline styles to style file. Component: " + componentFilePath);
                 writeTemplateFile(stylePath, templateContent);
             } else {
                 console.log("Component style file exists, so skipping this component. Component: " + componentFilePath);
