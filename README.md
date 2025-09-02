@@ -4,13 +4,14 @@ This is very useful command line tool to migrate angular component's inline styl
 Its the teadious job to manually do that. We need to touch hundred+ files based on size of the projects. 
 
 This tool will automate migration process and do that for you within fraction of seconds.
+If there is already a style file, it will add a second styleUrl, which has to be manually modified.
 
 ## Installation
 
 Install this tool globally, so that it will be available from anywhere
 
 ```
-npm i -g separate-ng-inline-styles
+npm i -g NvanWeeghel/separate-ng-inline-styles
 ```
 ## Usage
 
