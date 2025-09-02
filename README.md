@@ -38,7 +38,7 @@ Tool will do following processes
  - writes the separated inline styles content into scss file
  - Finally replace component file styles attribute with stylesUrl: "<componentName>.component.scss"
 
-## Author
+## Authors
 
 * **Niek van Weeghel**
 * **Mohammed Riyaz**
