@@ -30,7 +30,7 @@ function removeFile(path, messages) {
 
 function writeTemplateFile(filepath, styleContent) {
     let componentFilePath = filepath.replace(/(\.scss)$/, ".ts"),
-        pat = new RegExp("('|\")?style('|\")?:[\\s\\n]*`[\\s]*[^`]*`", "g");
+        pat = new RegExp("('|\")?styles('|\")?:[\\s\\n]*`[\\s]*[^`]*`", "g");
     fs.writeFile(filepath, styleContent, function (err) {
         if (err) {
             console.log("Error creating the style file, so reverting back.");
