@@ -1,7 +1,7 @@
 {
-  "name": "separate-ng-inline-templates",
+  "name": "separate-ng-inline-styles",
   "version": "1.0.0",
-  "description": "Utility to migrate angular component's inline template to teplateUrl",
+  "description": "Utility to migrate angular component's inline styles to styleUrl",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -19,7 +19,7 @@
   "bin": {
     "separate-ng-inline-templates": "bin/convert.js"
   },
-  "author": "Riyaz",
+  "author": "Weeghel",
   "license": "MIT",
   "dependencies": {
     "command-line-args": "^5.0.2",
