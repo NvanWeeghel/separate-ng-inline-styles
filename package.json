@@ -1,6 +1,6 @@
 {
   "name": "separate-ng-inline-styles",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Utility to migrate angular component's inline styles to styleUrl",
   "main": "index.js",
   "scripts": {
@@ -11,9 +11,8 @@
     "utility\"",
     "\"convert",
     "inline",
-    "template",
+    "style",
     "to",
-    "template",
     "url\""
   ],
   "bin": {
