@@ -9,4 +9,4 @@ const optionDefinitions = [
 const commandLineArgs = require('command-line-args')
 const options = commandLineArgs(optionDefinitions);
 
-convertor.convertInlineTemplate((options && options.dir) || "./", (options && options.fileFilter) || "");
+convertor.convertInlineStyle((options && options.dir) || "./", (options && options.fileFilter) || "");

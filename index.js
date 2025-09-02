@@ -10,10 +10,10 @@ function revertAllChanges(componentFilePath, isRevertAll) {
         success: "successfully removed component backup file. file: " + componentFilePath + "_back"
     });
     if (isRevertAll) {
-        let filepath = componentFilePath.replace(/(\.ts)$/, ".html");
+        let filepath = componentFilePath.replace(/(\.ts)$/, ".scss");
         removeFile(filepath, {
-            err: "error deleting the component html template file. please do it manually. file: " + filepath,
-            success: "successfully removed component html template file. file: " + filepath
+            err: "error deleting the component scss template file. please do it manually. file: " + filepath,
+            success: "successfully removed component scss template file. file: " + filepath
         });
     }
 }
@@ -28,21 +28,21 @@ function removeFile(path, messages) {
     });
 }
 
-function writeTemplateFile(filepath, templateContent) {
-    let componentFilePath = filepath.replace(/(\.html)$/, ".ts"),
-        pat = new RegExp("('|\")?template('|\")?:[\\s\\n]*`[\\s]*[^`]*`", "g");
-    fs.writeFile(filepath, templateContent, function (err) {
+function writeTemplateFile(filepath, styleContent) {
+    let componentFilePath = filepath.replace(/(\.scss)$/, ".ts"),
+        pat = new RegExp("('|\")?style('|\")?:[\\s\\n]*`[\\s]*[^`]*`", "g");
+    fs.writeFile(filepath, styleContent, function (err) {
         if (err) {
-            console.log("Error creating the template file, so reverting back.");
+            console.log("Error creating the style file, so reverting back.");
             revertAllChanges(componentFilePath);
         } else {
-            console.log('Successfully created the html template file. file: ' + filepath);
+            console.log('Successfully created the scsss style file. file: ' + filepath);
             fs.readFile(componentFilePath, 'utf-8', (err, data) => {
                 if (err) {
                     console.log("error reading component file");
                     revertAllChanges(componentFilePath, true);
                 } else {
-                    var editedContent = data.replace(pat, "templateUrl: \"" + path.basename(filepath) + "\"");
+                    var editedContent = data.replace(pat, "styleUrl: \"" + path.basename(filepath) + "\"");
 
                     fs.writeFile(componentFilePath, editedContent, 'utf-8', function (err) {
                         if (err) {
@@ -71,24 +71,24 @@ function takeFileBackupAndMigrate(componentFilePath, templateContent) {
             } else {
 
                 console.log('Successfully backed up the component file. File: ' +componentFilePath);
-                createTemplateHtmlFile(componentFilePath, templateContent);
+                createTemplateScssFile(componentFilePath, templateContent);
             }
         });
     }
 }
 
-function createTemplateHtmlFile(componentFilePath, templateContent) {
+function createTemplateScssFile(componentFilePath, templateContent) {
     let fileName = path.basename(componentFilePath),
         filePath = path.dirname(componentFilePath),
-        templatePath;
+        stylePath;
     if (fileName.match(/(\.component\.ts)$/)) {
-        templatePath = filePath + "/" + fileName.replace("component.ts", "component.html");
-        fs.stat(templatePath, function(err, stats) {
+        stylePath = filePath + "/" + fileName.replace("component.ts", "component.scss");
+        fs.stat(stylePath, function(err, stats) {
             if (!stats || (err && err.Error.match(/(no such file or directory)/gi))) {
-                console.log("Component Template file not exists and inline template found, so its migrating inline template to template file. Component" + componentFilePath);
-                writeTemplateFile(templatePath, templateContent);
+                console.log("Component style file not exists and inline styles found, so its migrating inline styles to style file. Component" + componentFilePath);
+                writeTemplateFile(stylePath, templateContent);
             } else {
-                console.log("Component template file exists, so skipping this component. Component: " + componentFilePath);
+                console.log("Component style file exists, so skipping this component. Component: " + componentFilePath);
             }
 
         });
@@ -96,22 +96,22 @@ function createTemplateHtmlFile(componentFilePath, templateContent) {
     return false;
 }
 
-exports.convertInlineTemplate = function(dir, fileFilter) {
+exports.convertInlineStyle = function(dir, fileFilter) {
     let processedFileCount = 0;
     console.log("Migration Process started ..... ");
     if (typeof dir !== "string") {
         console.log("invalid directory value");
         return;
     }
-    fif.find({term:"('|\")?template('|\")?:[\\s\\n]*`[\\s]*[^`]*`", flags: "g"}, dir, fileFilter||"component.ts$")
+    fif.find({term:"('|\")?styles('|\")?:[\\s\\n]*`[\\s]*[^`]*`", flags: "g"}, dir, fileFilter||"component.ts$")
         .then(function(results) {
             for (var result in results) {
                 console.log("filename: " + result);
                 var res = results[result];
                 if (res.matches[0]) {
-                    takeFileBackupAndMigrate(result, res.matches[0].replace(/('|")?template('|")?:[`\s\n\r\t]*/, "").replace(/`/g, ""));
+                    takeFileBackupAndMigrate(result, res.matches[0].replace(/('|")?styles('|")?:[`\s\n\r\t]*/, "").replace(/`/g, ""));
                 } else {
-                    console.log("No inline template found in Component. Component: " + result);
+                    console.log("No inline styles found in Component. Component: " + result);
                 }
                 processedFileCount++;
             }
@@ -119,7 +119,7 @@ exports.convertInlineTemplate = function(dir, fileFilter) {
         })
         .finally(()=>{
             if (!processedFileCount) {
-                console.log("No inline templates detected. You are good!");
+                console.log("No inline styles detected. You are good!");
             }
         });
 }
